@@ -3,7 +3,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import br.com.TodoAPI.Modal.Todo;
 import br.com.TodoAPI.Repository.TodoRepository;
@@ -14,24 +17,23 @@ public class TodoService {
     @Autowired
     private TodoRepository repositorio;
 
-    public Optional<List<Todo>> getTodo() {
+    public Optional<List<Todo>> get() {
         List<Todo> todos = repositorio.findAll();
         Optional<List<Todo>> optionalTodos = todos.isEmpty() ? Optional.empty() : Optional.of(todos);
-        return optionalTodos;
-        
+        return optionalTodos;        
     }
 
-    public Optional<Todo> getTodoId(Integer id) {
+    public Optional<Todo> getId(Integer id) {
         Optional<Todo> retorno =  repositorio.findById(id);
         return retorno;
     }
 
-    public Todo setTodo(Todo todo) {
+    public Todo post(Todo todo) {
         Todo savedTodo = repositorio.save(todo);
         return savedTodo;
     }
 
-    public Optional<Todo> updateTodo(Integer id, Todo requisicao){
+    public Optional<Todo> update(Integer id, Todo requisicao){
         Optional<Todo> retorno =  repositorio.findById(id);
 
         if(retorno.isPresent()){
@@ -46,6 +48,20 @@ public class TodoService {
 
             return Optional.of(repositorio.save(valor));
         }
-        return Optional.ofNullable(null);
+        return Optional.empty();
+    }
+
+    
+    public ResponseEntity<Void> delete(Integer id) {
+
+        if (repositorio.existsById(id)) {
+
+            repositorio.deleteById(id);
+            return ResponseEntity.noContent().build();
+
+        } else {
+            return ResponseEntity.notFound().build();
+
+        }
     }
 }
