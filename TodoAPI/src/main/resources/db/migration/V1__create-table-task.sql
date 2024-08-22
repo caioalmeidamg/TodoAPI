@@ -1,5 +1,5 @@
 CREATE TABLE tarefa (
     id SERIAL PRIMARY KEY,
-    title TEXT,
+    title VARCHAR(255) NOT NULL,
     done BOOLEAN NOT NULL
 );
