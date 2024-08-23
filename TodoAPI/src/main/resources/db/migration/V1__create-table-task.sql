@@ -1,4 +1,4 @@
-CREATE TABLE tarefa (
+CREATE TABLE task (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     done BOOLEAN NOT NULL
